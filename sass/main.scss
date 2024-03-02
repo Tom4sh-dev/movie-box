@@ -1,0 +1,262 @@
+@use './hamburger' as *;
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--header-height: 80px;
+	--dark-color: #191919;
+}
+
+body {
+	font-family: 'Share Tech Mono', monospace;
+	font-size: 10px;
+	color: #fff;
+	background: linear-gradient(135deg, #5b0621 0%, #000 100%);
+	background-attachment: fixed;
+	overflow-x: hidden;
+}
+
+.header {
+	position: absolute;
+	top: 0;
+	display: flex;
+	width: 100vw;
+	line-height: var(--header-height);
+	&__title {
+		margin-left: 50px;
+		width: 50%;
+		text-transform: uppercase;
+		font-size: 2rem;
+		letter-spacing: 2px;
+		user-select: none;
+		cursor: pointer;
+		transition: transform 0.3s ease-in-out;
+		&--active {
+			transform: translateX(-120%);
+		}
+	}
+	.hamburger {
+		position: fixed;
+		top: -20px;
+		right: 10%;
+		font-size: 5rem;
+		z-index: 100;
+	}
+}
+
+.nav {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 100vw;
+	transform: translate(-100%);
+	transition: transform 0.4s ease-in-out;
+	&--active {
+		transform: translate(0%);
+	}
+	&__form {
+		display: none;
+	}
+	&__list {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		list-style: none;
+		.menu {
+			position: relative;
+			user-select: none;
+			&__list {
+				margin-left: 20px;
+				list-style: none;
+			}
+			&__item {
+				margin: 10px;
+				font-size: 1.2rem;
+			}
+		}
+	}
+	&__item {
+		text-transform: uppercase;
+		font-size: 1.6rem;
+	}
+	&__link {
+		margin: 10px 0;
+		padding: 10px 0;
+		cursor: pointer;
+	}
+	.lang {
+		display: flex;
+		flex-direction: column;
+		margin-top: 40px;
+		font-size: 1rem;
+		text-transform: uppercase;
+		&__item {
+			padding: 5px;
+		}
+
+		&__pl {
+			opacity: 0;
+			transform: translateY(-100%);
+			z-index: -1;
+			transition: 0.3s;
+			&--active {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	}
+}
+
+.main {
+	margin-top: 100px;
+	transition: transform 0.3s ease-in-out;
+	&--active {
+		transform: translateX(-120%);
+	}
+	&__title {
+		margin: 0 40px 20px;
+		font-size: 1.5rem;
+	}
+	&__subtitle {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		margin-top: 25vh;
+		font-size: 2rem;
+	}
+	&__items-container {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		.item {
+			display: flex;
+			margin: 20px;
+			width: 300px;
+			background-color: var(--dark-color);
+			&__img-box {
+				width: 40%;
+				height: 100%;
+			}
+			&__img {
+				width: 100%;
+				height: 100%;
+			}
+			&__info-box {
+				width: 60%;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding: 15px;
+			}
+			&__header {
+				display: flex;
+				width: 100%;
+				margin-bottom: 25px;
+			}
+			&__title {
+				width: 80%;
+				font-size: 1rem;
+			}
+			&__rating {
+				width: 20%;
+				font-size: 1rem;
+				text-align: right;
+			}
+			.green {
+				color: green;
+			}
+			.orange {
+				color: orange;
+			}
+			.red {
+				color: red;
+			}
+			&__btn-container {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				flex-wrap: wrap;
+				height: 50px;
+				&::before {
+					content: '';
+					position: absolute;
+					top: -10px;
+					height: 1px;
+					width: 100%;
+					background-color: #fff;
+				}
+			}
+			&__btn {
+				padding-top: 5px;
+				color: #fff;
+				font-size: 1rem;
+				font-family: inherit;
+				border: none;
+				background-color: transparent;
+				cursor: pointer;
+				transition: filter 0.3s;
+				&:hover {
+					filter: brightness(70%);
+				}
+			}
+			&__btn:last-child {
+				margin-left: 30px;
+			}
+			&__info {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: 500px;
+				padding: 50px;
+				color: #000;
+				font-size: 1rem;
+				text-align: justify;
+				background-color: #fff;
+				cursor: pointer;
+				opacity: 0;
+				z-index: -1;
+				&--active {
+					opacity: 1;
+					z-index: 1;
+				}
+			}
+		}
+	}
+
+	&__btn-container {
+		padding: 40px 100px;
+		width: 100%;
+		text-align: right;
+	}
+	&__btn {
+		margin: 5px;
+		padding: 5px;
+		color: #fff;
+		font-size: 1rem;
+		font-family: inherit;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+	}
+	.prev-btn {
+		display: none;
+		&--active {
+			display: inline;
+		}
+	}
+	.next-btn {
+		display: none;
+		&--active {
+			display: inline;
+		}
+	}
+}
+
+@import './large';

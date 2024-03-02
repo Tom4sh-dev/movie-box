@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>MovieBox</title>
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+			rel="stylesheet"
+		/>
+        <!-- Font Awsome -->
+        <script src="https://kit.fontawesome.com/a7bcfeba04.js" crossorigin="anonymous"></script>
+		
+		<!-- CSS Styles -->
+		<link rel="stylesheet" href="./css/main.css" />
+	</head>
+	<body>
+		<header class="header">
+			<h1 class="header__title">Movie Box</h1>
+            <button class="hamburger hamburger--elastic" data-aos="fade-left" type="button">
+				<span class="hamburger-box">
+					<span class="hamburger-inner"></span>
+				</span>
+			</button>
+		</header>
+		<nav class="nav">
+			<form class="nav__form">
+				<input type="text" class="nav__searchbar" name="searchbox" placeholder="&#xf002" /></form>
+			
+			<ul class="nav__list">
+				<li class="nav__item menu">movies
+					<ul class="menu__list">
+						<li class="menu__item nav__link top-rated-movies">top rated</li>
+						<li class="menu__item nav__link upcoming-movies">upcoming</li>
+					</ul>
+				</li>
+				<li class="nav__item menu">tv
+					<ul class="menu__list">
+						<li class="menu__item nav__link top-rated-tv">top rated</li>
+					</ul>
+				</li>
+				<li class="nav__item menu">people
+					<ul class="menu__list">
+						<li class="menu__item nav__link popular-people">popular</li>
+					</ul>
+				</li>
+				<div class="nav__spacer"></div>
+				<li class="nav__item nav__link watchlist">watchlist</li>
+				<li class="nav__item nav__link favorites">favorites</li>
+				<!-- <li class="nav__item lang">
+					<p class="lang__item lang__en">en</p>
+					<p class="lang__item lang__pl">pl</p>
+				</li> -->
+			</ul>
+		</nav>
+
+		<main class="main">
+			<h2 class="main__title">Movies popular now</h2>
+			<h3 class="main__subtitle">Nothing on your list...</h3>
+			<div class="main__items-container">
+			</div>
+			<div class="main__btn-container">
+				<button class="main__btn prev-btn">prev</button>
+			<button class="main__btn next-btn next-btn--active">next</button>
+			</div>
+		</main>
+
+		<script src="./js/api.js"></script>
+		<script src="./js/script.js"></script>
+	</body>
+</html>
