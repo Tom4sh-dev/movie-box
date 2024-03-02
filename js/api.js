@@ -36,6 +36,7 @@ async function getData(url) {
 	const data = await res.json();
 	const results = data.results;
 	showList(results);
+	console.log(results);
 }
 
 // Show Popular Movies OnLoad
@@ -71,12 +72,13 @@ function showList(items) {
 	items.forEach((item) => {
 		const {
 			title,
+			name,
 			poster_path,
 			profile_path,
 			vote_average,
 			overview,
 			release_date,
-			name,
+			first_air_date,
 			known_for,
 			gender,
 		} = item;
@@ -136,9 +138,7 @@ function showList(items) {
         </div>
 		${
 			overview
-				? `<p class="item__info"> ${
-						title ? title : name
-				  } </br></br> ${release_date ? 	release_date : '' }</br></br></br> ${overview}</p>`
+				? `<p class="item__info"> ${title ? title : name} ${!gender ? `</br></br>${release_date ? release_date : first_air_date}` : ''} </br></br></br> ${overview}</p>`
 				: '<p class="item__info">No info found</p>'
 		} `;
 		itemsContainer.appendChild(element);
@@ -207,15 +207,14 @@ function addToFavorites(items) {
 	});
 }
 function createItemAddToList(list, items, idx) {
-	const { title, name, poster_path, vote_average, overview, id } =
-				items[idx];
-			const item = {
-				title: title ? title : name,
-				overview: overview ? overview : '',
-				rating: vote_average,
-				poster_path: poster_path,
-				id: id,
-			};
+	const { title, name, poster_path, vote_average, overview, id } = items[idx];
+	const item = {
+		title: title ? title : name,
+		overview: overview ? overview : '',
+		rating: vote_average,
+		poster_path: poster_path,
+		id: id,
+	};
 	let isInList = Boolean(list.find((el) => el.title === item.title));
 	if (!isInList) {
 		list.push(item);
