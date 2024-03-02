@@ -30,22 +30,7 @@
 			display: block;
 			margin: auto 0 auto 2%;
 		}
-		&__searchbox {
-			padding: 10px;
-			color: #fff;
-			font-family: inherit;
-			border: none;
-			border-radius: 10px;
-			background-color: var(--dark-color);
-			&::placeholder {
-				font-family: FontAwesome;
-				color: #fff;
-			}
-			&:focus {
-				outline: none;
-				background-color: #191919e7;
-			}
-		}
+	
 		&__list {
 			position: static;
 			display: flex;

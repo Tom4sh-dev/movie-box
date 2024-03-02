@@ -58,7 +58,25 @@ body {
 		transform: translate(0%);
 	}
 	&__form {
-		display: none;
+		line-height: var(--header-height);
+		width: 60%;
+		text-align: center;
+	}
+	&__searchbox {
+		padding: 10px;
+		color: #fff;
+		font-family: inherit;
+		border: none;
+		border-radius: 10px;
+		background-color: var(--dark-color);
+		&::placeholder {
+			font-family: FontAwesome;
+			color: #fff;
+		}
+		&:focus {
+			outline: none;
+			background-color: #191919e7;
+		}
 	}
 	&__list {
 		position: absolute;
@@ -213,7 +231,8 @@ body {
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
-				width: 500px;
+				width: 90%;
+				max-width: 500px;
 				padding: 50px;
 				color: #000;
 				font-size: 1rem;
