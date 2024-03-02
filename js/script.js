@@ -16,7 +16,6 @@ const headerTitle = document.querySelector('.header__title');
 // 	langPl.classList.toggle('lang__pl--active');
 // });
 
-
 // Navigation Behavior
 function handleNav() {
 	nav.classList.toggle('nav--active');
@@ -25,14 +24,12 @@ function handleNav() {
 	navBtn.classList.toggle('is-active');
 }
 
-
 // Event Listeners
 navBtn.addEventListener('click', handleNav);
-links.forEach((link) => { 
+links.forEach((link) => {
 	link.addEventListener('click', handleNav);
 });
 headerTitle.addEventListener('click', () => window.location.reload());
-
 
 menu.forEach((item, idx) =>
 	item.addEventListener('mouseenter', () => {
@@ -44,7 +41,6 @@ menu.forEach((item, idx) =>
 		menuList[idx].classList.remove('menu__list--active');
 	})
 );
-
 
 const apiKey = '91d37b248bc493220dad9af41c35790a';
 
@@ -185,7 +181,11 @@ function showList(items) {
         </div>
 		${
 			overview
-				? `<p class="item__info"> ${title ? title : name} ${!gender ? `</br></br>${release_date ? release_date : first_air_date}` : ''} </br></br></br> ${overview}</p>`
+				? `<p class="item__info"> ${title ? title : name} ${
+						!gender
+							? `</br></br>${release_date ? release_date : first_air_date}`
+							: ''
+				  } </br></br></br> ${overview}</p>`
 				: '<p class="item__info">No info found</p>'
 		} `;
 		itemsContainer.appendChild(element);
@@ -254,14 +254,22 @@ function addToFavorites(items) {
 	});
 }
 function createItemAddToList(list, items, idx) {
-	const { title, name, poster_path, vote_average, overview, release_date,
-		first_air_date, id } = items[idx];
+	const {
+		title,
+		name,
+		poster_path,
+		vote_average,
+		overview,
+		release_date,
+		first_air_date,
+		id,
+	} = items[idx];
 	const item = {
 		title: title ? title : name,
 		overview: overview ? overview : '',
 		rating: vote_average,
 		poster_path: poster_path,
-		released: release_date ? release_date : first_air_date,
+		release_date: release_date ? release_date : first_air_date,
 		id: id,
 	};
 	let isInList = Boolean(list.find((el) => el.title === item.title));
@@ -331,7 +339,7 @@ form.addEventListener('submit', (e) => {
 	const searchTerm = search.value;
 	if (searchTerm && searchTerm !== '') {
 		getData(searchURL + searchTerm + '"&page=');
-		handleNav()
+		handleNav();
 		mainTitle.textContent = `Found results`;
 		search.value = '';
 	} else {
