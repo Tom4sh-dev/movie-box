@@ -29,12 +29,15 @@
 		&__form {
 			display: block;
 			margin: auto 0 auto 2%;
+			width: auto;
 		}
 	
 		&__list {
 			position: static;
 			display: flex;
+			flex-direction: row;
 			justify-content: space-around;
+			flex-wrap: nowrap;
 			width: 100%;
 			transform: translate(0, 0);
 			.menu {
