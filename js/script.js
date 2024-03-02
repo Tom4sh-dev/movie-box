@@ -44,3 +44,304 @@ menu.forEach((item, idx) =>
 		menuList[idx].classList.remove('menu__list--active');
 	})
 );
+
+
+const apiKey = '91d37b248bc493220dad9af41c35790a';
+
+// API URLS
+const popularMovies = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=`;
+const topRatedMovies = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=en-US&page=`;
+const upcomingMovies = `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=en-US&page=`;
+const topRatedTv = `https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=en-US&page=`;
+const popularPeople = `https://api.themoviedb.org/3/person/popular?api_key=${apiKey}&language=en-US&page=`;
+const imgPath = 'https://image.tmdb.org/t/p/w300';
+const searchURL = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query="`;
+
+// Item Data
+const itemsContainer = document.querySelector('.main__items-container');
+const mainTitle = document.querySelector('.main__title');
+const mainSubtitle = document.querySelector('.main__subtitle');
+
+// Searchbox
+const form = document.querySelector('.nav__form');
+const search = document.querySelector('.nav__searchbox');
+
+// Nav Links
+const navLinks = document.querySelectorAll('.nav__link');
+
+// Page Buttons
+const pageBtns = document.querySelectorAll('.main__btn');
+const pageBtnContainer = document.querySelector('.main__btn-container');
+let page = 1;
+
+// Watchlist/Favorites Containers
+let watchList = [];
+let favorites = [];
+
+// Get Data From API
+async function getData(url) {
+	const res = await fetch(url + page);
+	const data = await res.json();
+	const results = data.results;
+	showList(results);
+}
+
+// Show Popular Movies OnLoad
+getData(popularMovies);
+
+// Change Sections
+function changeSection(link) {
+	page = 1;
+	if (link.classList.contains('top-rated-movies')) {
+		getData(topRatedMovies);
+		mainTitle.textContent = 'Top rated movies';
+	} else if (link.classList.contains('upcoming-movies')) {
+		getData(upcomingMovies);
+		mainTitle.textContent = 'Upcoming movies';
+	} else if (link.classList.contains('top-rated-tv')) {
+		getData(topRatedTv);
+		mainTitle.textContent = 'Top rated TV Series';
+	} else if (link.classList.contains('popular-people')) {
+		getData(popularPeople);
+		mainTitle.textContent = 'Popular people';
+	} else if (link.classList.contains('watchlist')) {
+		showList(watchList);
+		mainTitle.textContent = 'My watchlist';
+	} else if (link.classList.contains('favorites')) {
+		showList(favorites);
+		mainTitle.textContent = 'My favorites';
+	}
+}
+
+// Show List Of Movies/TV/People
+function showList(items) {
+	itemsContainer.innerHTML = '';
+	items.forEach((item) => {
+		const {
+			title,
+			name,
+			poster_path,
+			profile_path,
+			vote_average,
+			overview,
+			release_date,
+			first_air_date,
+			known_for,
+			gender,
+		} = item;
+
+		const element = document.createElement('div');
+		element.classList.add('item');
+		element.innerHTML = `
+        <div class="item__img-box">
+            <img src=${
+							poster_path || profile_path
+								? `${
+										poster_path ? imgPath + poster_path : imgPath + profile_path
+								  }`
+								: 'https://cdn.pixabay.com/photo/2017/02/01/00/26/cranium-2028555_1280.png'
+						} alt="${title ? title : name}"} class="item__img">
+        </div>
+        <div class="item__info-box">
+            <div class="item__header">
+                <h3 class="item__title">${title ? title : name}</h3>
+                ${
+									vote_average
+										? `<p class="item__rating ${ratingColor(
+												vote_average
+										  )}">${vote_average.toFixed(1)}</p>`
+										: ''
+								}
+            </div>
+			${
+				known_for
+					? `${
+							known_for
+								? `<p style="font-size: .8rem">Known for: <span style="color: gold">${known_for[0].title}, ${known_for[1].title}, ${known_for[2].title}</span></p>`
+								: ''
+					  }`
+					: ''
+			}
+			
+			${
+				!gender
+					? `${
+							items === watchList || items === favorites
+								? `<div class="item__btn-container" style="flex-direction:row; justify-content:space-between; width: 100%">
+        	    <button class="item__btn remove-btn">- remove</button>
+        	    <button class="item__btn info-btn">info</button>
+        	</div>   `
+								: `<div class="item__btn-container">
+				<button class="item__btn watchlist-btn">+ watchlist</button>
+				<button class="item__btn favorites-btn">+ favorites</button>
+				<button class="item__btn info-btn">info</button>
+			</div>`
+					  }`
+					: `<div class="item__btn-container" style="display:none">
+					<button class="item__btn watchlist-btn">+ watchlist</button>
+					<button class="item__btn favorites-btn">+ favorites</button>
+			</div>`
+			}
+        </div>
+		${
+			overview
+				? `<p class="item__info"> ${title ? title : name} ${!gender ? `</br></br>${release_date ? release_date : first_air_date}` : ''} </br></br></br> ${overview}</p>`
+				: '<p class="item__info">No info found</p>'
+		} `;
+		itemsContainer.appendChild(element);
+	});
+
+	items === watchList || items === favorites
+		? (pageBtnContainer.style.display = 'none')
+		: (pageBtnContainer.style.display = 'inline-block');
+
+	items.length === 0
+		? (mainSubtitle.style.display = 'inline')
+		: (mainSubtitle.style.display = 'none');
+	showInfo();
+	addToWatchList(items);
+	addToFavorites(items);
+	removeItemFromMyList(items);
+}
+
+// Handle Rating Color
+function ratingColor(vote) {
+	if (vote >= 8) {
+		return 'green';
+	} else if (vote >= 5) {
+		return 'orange';
+	} else {
+		return 'red';
+	}
+}
+
+// Show Info On Click
+function showInfo() {
+	const itemsInfo = document.querySelectorAll('.item__info');
+	const infoBtns = document.querySelectorAll('.info-btn');
+	infoBtns.forEach((btn) =>
+		btn.addEventListener('click', () => {
+			itemsInfo.forEach((infoEl) =>
+				infoEl.classList.remove('item__info--active')
+			);
+			btn
+				.closest('.item__info-box')
+				.nextElementSibling.classList.add('item__info--active');
+		})
+	);
+	itemsInfo.forEach((infoEl) =>
+		infoEl.addEventListener('click', () =>
+			infoEl.classList.remove('item__info--active')
+		)
+	);
+}
+
+// Add And Remove From List
+function addToWatchList(items) {
+	const watchlistBtns = document.querySelectorAll('.watchlist-btn');
+	watchlistBtns.forEach((btn, idx) => {
+		btn.addEventListener('click', () => {
+			createItemAddToList(watchList, items, idx);
+		});
+	});
+}
+function addToFavorites(items) {
+	const favoritesBtns = document.querySelectorAll('.favorites-btn');
+	favoritesBtns.forEach((btn, idx) => {
+		btn.addEventListener('click', () => {
+			createItemAddToList(favorites, items, idx);
+		});
+	});
+}
+function createItemAddToList(list, items, idx) {
+	const { title, name, poster_path, vote_average, overview, release_date,
+		first_air_date, id } = items[idx];
+	const item = {
+		title: title ? title : name,
+		overview: overview ? overview : '',
+		rating: vote_average,
+		poster_path: poster_path,
+		released: release_date ? release_date : first_air_date,
+		id: id,
+	};
+	let isInList = Boolean(list.find((el) => el.title === item.title));
+	if (!isInList) {
+		list.push(item);
+	} else {
+		return;
+	}
+	updateLS();
+}
+function removeItemFromMyList(list) {
+	const removeBtns = document.querySelectorAll('.remove-btn');
+	removeBtns.forEach((btn, idx) => {
+		btn.addEventListener('click', () => {
+			list.splice(idx, 1);
+			if (list === favorites) {
+				showList(list);
+			} else if (list === watchList) {
+				showList(list);
+			}
+		});
+	});
+	updateLS();
+}
+
+// Local Storage Update
+function updateLS() {
+	localStorage.setItem('watchList', JSON.stringify(watchList));
+	localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+function getFromLS() {
+	const watchListLS = JSON.parse(localStorage.getItem('watchList'));
+	const favoritesLS = JSON.parse(localStorage.getItem('favorites'));
+	if (watchListLS) {
+		watchListLS.forEach((item) => watchList.push(item));
+	}
+	if (favoritesLS) {
+		favoritesLS.forEach((item) => favorites.push(item));
+	}
+}
+getFromLS();
+
+// Change Page
+function changePage(btn) {
+	if (btn.classList.contains('next-btn')) {
+		document.querySelector('.prev-btn').classList.add('prev-btn--active');
+		if (page <= 5) {
+			page++;
+			if (page === 5) {
+				btn.classList.remove('next-btn--active');
+			}
+		}
+	} else {
+		page--;
+		document.querySelector('.next-btn').classList.add('next-btn--active');
+		if (page >= 1) {
+			if (page === 1) {
+				btn.classList.remove('prev-btn--active');
+			}
+		}
+	}
+}
+
+// Event Listeners
+form.addEventListener('submit', (e) => {
+	e.preventDefault();
+	const searchTerm = search.value;
+	if (searchTerm && searchTerm !== '') {
+		getData(searchURL + searchTerm + '"&page=');
+		handleNav()
+		mainTitle.textContent = `Found results`;
+		search.value = '';
+	} else {
+		window.location.reload();
+		mainTitle.textContent = `Movies popular now`;
+	}
+});
+navLinks.forEach((link) =>
+	link.addEventListener('click', () => changeSection(link))
+);
+pageBtns.forEach((btn) => {
+	btn.addEventListener('click', () => changePage(btn));
+});
