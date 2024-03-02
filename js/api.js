@@ -36,7 +36,6 @@ async function getData(url) {
 	const data = await res.json();
 	const results = data.results;
 	showList(results);
-	console.log(results);
 }
 
 // Show Popular Movies OnLoad
