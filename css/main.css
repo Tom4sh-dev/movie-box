@@ -400,7 +400,7 @@ body {
     display: block;
     margin: auto 0 auto 2%;
   }
-  .nav__searchbar {
+  .nav__searchbox {
     padding: 10px;
     color: #fff;
     font-family: inherit;
@@ -408,15 +408,15 @@ body {
     border-radius: 10px;
     background-color: var(--dark-color);
   }
-  .nav__searchbar::-moz-placeholder {
+  .nav__searchbox::-moz-placeholder {
     font-family: FontAwesome;
     color: #fff;
   }
-  .nav__searchbar::placeholder {
+  .nav__searchbox::placeholder {
     font-family: FontAwesome;
     color: #fff;
   }
-  .nav__searchbar:focus {
+  .nav__searchbox:focus {
     outline: none;
     background-color: rgba(25, 25, 25, 0.9058823529);
   }
