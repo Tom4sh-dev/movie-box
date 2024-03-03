@@ -273,27 +273,9 @@ function addToFavorites(items) {
 	});
 }
 function createItemAddToList(list, items, idx, notification) {
-	const {
-		title,
-		name,
-		poster_path,
-		vote_average,
-		overview,
-		release_date,
-		first_air_date,
-		id,
-	} = items[idx];
-	const item = {
-		title: title ? title : name,
-		overview: overview ? overview : '',
-		rating: vote_average,
-		poster_path: poster_path,
-		release_date: release_date ? release_date : first_air_date,
-		id: id,
-	};
-	let isInList = Boolean(list.find((el) => el.title === item.title));
+	let isInList = Boolean(list.find((el) => el.title === items[idx].title));
 	if (!isInList) {
-		list.push(item);
+		list.push(items[idx]);
 		showNotification(notification);
 	} else {
 		showNotification('Already on the list');
