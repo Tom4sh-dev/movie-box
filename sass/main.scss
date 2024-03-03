@@ -26,8 +26,7 @@ body {
 	width: 100vw;
 	line-height: var(--header-height);
 	&__title {
-		margin-left: 50px;
-		width: 50%;
+		padding: 0 50px;
 		text-transform: uppercase;
 		font-size: 2rem;
 		letter-spacing: 2px;
@@ -180,16 +179,22 @@ body {
 			&__header {
 				display: flex;
 				width: 100%;
+				flex-wrap: wrap;
 				margin-bottom: 25px;
+			}
+			&__rating {
+				width: 50%;
+				font-size: 1rem;
+				text-align: right;
+			}
+			&__year {
+				width: 50%;
+				color: tan;
+				font-size: 0.8rem;
 			}
 			&__title {
 				width: 80%;
 				font-size: 1rem;
-			}
-			&__rating {
-				width: 20%;
-				font-size: 1rem;
-				text-align: right;
 			}
 			.green {
 				color: green;
@@ -244,13 +249,20 @@ body {
 				font-size: 1rem;
 				text-align: justify;
 				background-color: #fff;
-				cursor: pointer;
 				opacity: 0;
 				z-index: -1;
 				&--active {
 					opacity: 1;
 					z-index: 1;
 				}
+			}
+			&__close-btn{
+				font-size: 2rem;
+				position: absolute;
+				top: 15px;
+				right: 20px;
+				user-select: none;
+				cursor: pointer;
 			}
 		}
 	}
@@ -280,6 +292,25 @@ body {
 		display: none;
 		&--active {
 			display: inline;
+		}
+	}
+	&__notification {
+		position: absolute;
+		height: 100vh;
+	}
+	&__notification-text {
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+		padding: 5px;
+		font-size: 1.5rem;
+		color: #000;
+		user-select: none;
+		background-color: #fff;
+		opacity: 0;
+		transition: opacity .3s;
+		&--active {
+			opacity: 1;
 		}
 	}
 }

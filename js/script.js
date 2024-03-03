@@ -57,6 +57,7 @@ const searchURL = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&q
 const itemsContainer = document.querySelector('.main__items-container');
 const mainTitle = document.querySelector('.main__title');
 const mainSubtitle = document.querySelector('.main__subtitle');
+const addListNotification = document.querySelector('.main__notification-text');
 
 // Searchbox
 const form = document.querySelector('.nav__form');
@@ -80,6 +81,7 @@ async function getData(url) {
 	const data = await res.json();
 	const results = data.results;
 	showList(results);
+	console.log(results);
 }
 
 // Show Popular Movies OnLoad
@@ -140,14 +142,26 @@ function showList(items) {
         </div>
         <div class="item__info-box">
             <div class="item__header">
+
+			${
+				!gender
+					? `<p class="item__year">${(release_date
+							? release_date
+							: first_air_date
+					  ).slice(0, 4)}</p>`
+					: ''
+			}
+
+				
+				${
+					vote_average
+						? `<p class="item__rating ${ratingColor(
+								vote_average
+						  )}">${vote_average.toFixed(1)}</p>`
+						: ''
+				}
                 <h3 class="item__title">${title ? title : name}</h3>
-                ${
-									vote_average
-										? `<p class="item__rating ${ratingColor(
-												vote_average
-										  )}">${vote_average.toFixed(1)}</p>`
-										: ''
-								}
+              
             </div>
 			${
 				known_for
@@ -179,13 +193,18 @@ function showList(items) {
 			</div>`
 			}
         </div>
+
 		${
 			overview
-				? `<p class="item__info"> ${title ? title : name} ${
+				? `<div class="item__info"> 
+				<p class="item__close-btn">x</p>
+				<p>${title ? title : name}</p> ${
 						!gender
-							? `</br></br>${release_date ? release_date : first_air_date}`
+							? `</br></br><p>${
+									release_date ? release_date : first_air_date
+							  }</p>`
 							: ''
-				  } </br></br></br> ${overview}</p>`
+				  } </br></br></br> <p>${overview}</p></div>`
 				: '<p class="item__info">No info found</p>'
 		} `;
 		itemsContainer.appendChild(element);
@@ -219,7 +238,8 @@ function ratingColor(vote) {
 function showInfo() {
 	const itemsInfo = document.querySelectorAll('.item__info');
 	const infoBtns = document.querySelectorAll('.info-btn');
-	infoBtns.forEach((btn) =>
+	const infoCloseBtns = document.querySelectorAll('.item__close-btn');
+	infoBtns.forEach((btn, idx) =>
 		btn.addEventListener('click', () => {
 			itemsInfo.forEach((infoEl) =>
 				infoEl.classList.remove('item__info--active')
@@ -227,12 +247,11 @@ function showInfo() {
 			btn
 				.closest('.item__info-box')
 				.nextElementSibling.classList.add('item__info--active');
+				infoCloseBtns[idx].addEventListener('click', () =>
+				itemsInfo[idx].classList.remove('item__info--active')
+			);
+			
 		})
-	);
-	itemsInfo.forEach((infoEl) =>
-		infoEl.addEventListener('click', () =>
-			infoEl.classList.remove('item__info--active')
-		)
 	);
 }
 
@@ -241,7 +260,7 @@ function addToWatchList(items) {
 	const watchlistBtns = document.querySelectorAll('.watchlist-btn');
 	watchlistBtns.forEach((btn, idx) => {
 		btn.addEventListener('click', () => {
-			createItemAddToList(watchList, items, idx);
+			createItemAddToList(watchList, items, idx, 'Added to watchlist');
 		});
 	});
 }
@@ -249,11 +268,11 @@ function addToFavorites(items) {
 	const favoritesBtns = document.querySelectorAll('.favorites-btn');
 	favoritesBtns.forEach((btn, idx) => {
 		btn.addEventListener('click', () => {
-			createItemAddToList(favorites, items, idx);
+			createItemAddToList(favorites, items, idx, 'Added to favorites');
 		});
 	});
 }
-function createItemAddToList(list, items, idx) {
+function createItemAddToList(list, items, idx, notification) {
 	const {
 		title,
 		name,
@@ -275,7 +294,9 @@ function createItemAddToList(list, items, idx) {
 	let isInList = Boolean(list.find((el) => el.title === item.title));
 	if (!isInList) {
 		list.push(item);
+		showNotification(notification);
 	} else {
+		showNotification('Already on the list');
 		return;
 	}
 	updateLS();
@@ -293,6 +314,14 @@ function removeItemFromMyList(list) {
 		});
 	});
 	updateLS();
+}
+
+function showNotification(text) {
+	addListNotification.textContent = text;
+	addListNotification.classList.add('main__notification-text--active');
+	setTimeout(() => {
+		addListNotification.classList.remove('main__notification-text--active');
+	}, 1000);
 }
 
 // Local Storage Update
