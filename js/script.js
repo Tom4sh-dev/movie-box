@@ -273,8 +273,8 @@ function addToFavorites(items) {
 	});
 }
 function createItemAddToList(list, items, idx, notification) {
-	let isInList = Boolean(list.find((el) => el.title === items[idx].title));
-	if (!isInList) {
+	let isOnList = Boolean(list.find((el) => el.title === items[idx].title));
+	if (!isOnList) {
 		list.push(items[idx]);
 		showNotification(notification);
 	} else {
