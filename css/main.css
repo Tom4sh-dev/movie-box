@@ -447,6 +447,7 @@ body {
   }
   .nav__searchbox {
     width: 90%;
+    max-width: 300px;
     padding: 7px;
     font-size: 0.8rem;
   }
