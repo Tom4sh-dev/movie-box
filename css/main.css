@@ -492,6 +492,8 @@ body {
     line-height: auto;
   }
   .main {
+    margin: auto;
     margin-top: 120px;
+    max-width: 1400px;
   }
 }/*# sourceMappingURL=main.css.map */
