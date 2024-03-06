@@ -14,9 +14,17 @@ body {
 	font-family: 'Share Tech Mono', monospace;
 	font-size: 10px;
 	color: #fff;
-	background: linear-gradient(135deg, #5b0621 0%, #000 100%);
-	background-attachment: fixed;
 	overflow-x: hidden;
+}
+
+.bg-gradient {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: linear-gradient(135deg, #5b0621 0%, #000 100%);
+	z-index: -100;
 }
 
 .header {
@@ -32,14 +40,10 @@ body {
 		letter-spacing: 2px;
 		user-select: none;
 		cursor: pointer;
-		transition: transform 0.3s ease-in-out;
-		&--active {
-			transform: translateX(-200%);
-		}
 	}
 	.hamburger {
 		position: fixed;
-		top: -20px;
+		top: -24px;
 		right: 10%;
 		font-size: 5rem;
 		z-index: 100;
@@ -51,6 +55,8 @@ body {
 	top: 0;
 	bottom: 0;
 	width: 100vw;
+	background: linear-gradient(135deg, #5b0621 0%, #000 100%);
+	z-index: 10;
 	transform: translate(-110%);
 	transition: transform 0.4s ease-in-out;
 	&--active {
@@ -111,35 +117,10 @@ body {
 		padding: 10px 0;
 		cursor: pointer;
 	}
-	.lang {
-		display: flex;
-		flex-direction: column;
-		margin-top: 40px;
-		font-size: 1rem;
-		text-transform: uppercase;
-		&__item {
-			padding: 5px;
-		}
-
-		&__pl {
-			opacity: 0;
-			transform: translateY(-100%);
-			z-index: -1;
-			transition: 0.3s;
-			&--active {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-	}
 }
 
 .main {
 	margin-top: 100px;
-	transition: transform 0.3s ease-in-out;
-	&--active {
-		transform: translateX(-200%);
-	}
 	&__title {
 		margin: 0 40px 20px;
 		font-size: 1.5rem;
@@ -156,31 +137,32 @@ body {
 		justify-content: center;
 		flex-wrap: wrap;
 		.item {
+			position: relative;
 			display: flex;
+			flex-direction: column;
 			margin: 20px;
-			width: 300px;
+			width: 150px;
 			background-color: var(--dark-color);
 			&__img-box {
-				width: 40%;
-				height: 100%;
+				width: 100%;
+				height: 250px;
 			}
 			&__img {
 				width: 100%;
 				height: 100%;
 			}
 			&__info-box {
-				width: 60%;
+				width: 100%;
 				height: 100%;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-				padding: 15px;
+				padding: 10px;
 			}
 			&__header {
 				display: flex;
 				width: 100%;
 				flex-wrap: wrap;
-				margin-bottom: 25px;
 			}
 			&__rating {
 				width: 50%;
@@ -193,7 +175,7 @@ body {
 				font-size: 0.8rem;
 			}
 			&__title {
-				width: 80%;
+				margin-top: 10px;
 				font-size: 1rem;
 			}
 			.green {
@@ -206,20 +188,10 @@ body {
 				color: red;
 			}
 			&__btn-container {
-				position: relative;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 				flex-wrap: wrap;
-				height: 50px;
-				&::before {
-					content: '';
-					position: absolute;
-					top: -10px;
-					height: 1px;
-					width: 100%;
-					background-color: #fff;
-				}
 			}
 			&__btn {
 				padding-top: 5px;
@@ -234,8 +206,13 @@ body {
 					filter: brightness(70%);
 				}
 			}
-			&__btn:last-child {
-				margin-left: 30px;
+
+			.info-btn {
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: 10px;
+				background-color: var(--dark-color);
 			}
 			&__info {
 				position: fixed;
@@ -256,7 +233,7 @@ body {
 					z-index: 1;
 				}
 			}
-			&__close-btn{
+			&__close-btn {
 				font-size: 2rem;
 				position: absolute;
 				top: 15px;
@@ -308,7 +285,7 @@ body {
 		user-select: none;
 		background-color: #fff;
 		opacity: 0;
-		transition: opacity .3s;
+		transition: opacity 0.3s;
 		&--active {
 			opacity: 1;
 		}

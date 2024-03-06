@@ -1,13 +1,11 @@
 @media (min-width: 992px) {
 	.header {
-		width: 30vw;
-		line-height: var(--header-height);
+		width: 25vw;
+		line-height: 50px;
 		&__title {
 			width: 100%;
 			text-align: center;
-			&--active {
-				transform: translate(0%);
-			}
+			font-size: 1.4rem;
 		}
 		.hamburger {
 			display: none;
@@ -19,16 +17,22 @@
 		top: 0;
 		right: 0;
 		display: flex;
-		height: var(--header-height);
-		width: 70vw;
-		background-color: #fff;
+		height: 50px;
+		width: 75vw;
+		background: #fff;
 		color: #000;
 		border-bottom-left-radius: 30px;
 		transform: translate(0%);
 		&__form {
 			display: block;
 			margin: auto 0 auto 2%;
-			width: auto;
+			width: 30%;
+			line-height: 50px;
+		}
+		&__searchbox {
+			width: 90%;
+			padding: 7px;
+			font-size: .8rem;
 		}
 	
 		&__list {
@@ -38,12 +42,13 @@
 			justify-content: space-around;
 			flex-wrap: nowrap;
 			margin: 0;
-			width: 100%;
+			margin-left: auto;
+			width: 70%;
 			transform: translate(0, 0);
 			.menu {
 				&__list {
 					position: absolute;
-					margin: 30px 0;
+					margin: 20px 0;
 					height: 0;
 					overflow: hidden;
 					transition: all 0.4s ease-in;
@@ -64,7 +69,7 @@
 		}
 		&__spacer {
 			margin: auto 0;
-			height: 30px;
+			height: 20px;
 			width: 2px;
 			background-color: #000;
 		}
@@ -73,23 +78,10 @@
 			font-size: 1.2rem;
 			line-height: auto;
 		}
-
-		.lang {
-			position: fixed;
-			top: var(--header-height);
-			right: 10%;
-			margin-top: 20px;
-			color: #fff;
-			&__item {
-				cursor: pointer;
-			}
-		}
 	}
 
 	.main {
-		&--active {
-			transform: translate(0%);
-		}
-		margin-top: 150px;
+		margin-top: 120px;
+	
 	}
 }

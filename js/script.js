@@ -9,13 +9,6 @@ const links = document.querySelectorAll('.nav__link');
 const mainSection = document.querySelector('.main');
 const headerTitle = document.querySelector('.header__title');
 
-// const lang = document.querySelector('.lang');
-// const langPl = document.querySelector('.lang__pl');
-// const langEn = document.querySelector('.lang__en');
-// langEn.addEventListener('click', (e) => {
-// 	langPl.classList.toggle('lang__pl--active');
-// });
-
 // Navigation Behavior
 function handleNav() {
 	nav.classList.toggle('nav--active');
@@ -70,6 +63,10 @@ const navLinks = document.querySelectorAll('.nav__link');
 const pageBtns = document.querySelectorAll('.main__btn');
 const pageBtnContainer = document.querySelector('.main__btn-container');
 let page = 1;
+let urlLink = popularMovies
+
+// Listeners added to change page button
+let listenersAdded = false
 
 // Watchlist/Favorites Containers
 let watchList = [];
@@ -81,7 +78,14 @@ async function getData(url) {
 	const data = await res.json();
 	const results = data.results;
 	showList(results);
-	console.log(results);
+	
+	// Change Page
+	if (!listenersAdded) {
+        pageBtns.forEach((btn) => {
+            btn.addEventListener('click', () => changePage(urlLink, btn));
+        });
+        listenersAdded = true; // Set the flag so this block won't run again
+    }
 }
 
 // Show Popular Movies OnLoad
@@ -90,16 +94,22 @@ getData(popularMovies);
 // Change Sections
 function changeSection(link) {
 	page = 1;
+	document.querySelector('.prev-btn').classList.remove('prev-btn--active');
+	document.querySelector('.next-btn').classList.add('next-btn--active');
 	if (link.classList.contains('top-rated-movies')) {
+		urlLink = topRatedMovies
 		getData(topRatedMovies);
 		mainTitle.textContent = 'Top rated movies';
 	} else if (link.classList.contains('upcoming-movies')) {
+		urlLink = upcomingMovies
 		getData(upcomingMovies);
 		mainTitle.textContent = 'Upcoming movies';
 	} else if (link.classList.contains('top-rated-tv')) {
+		urlLink = topRatedTv
 		getData(topRatedTv);
 		mainTitle.textContent = 'Top rated TV Series';
 	} else if (link.classList.contains('popular-people')) {
+		urlLink = popularPeople
 		getData(popularPeople);
 		mainTitle.textContent = 'Popular people';
 	} else if (link.classList.contains('watchlist')) {
@@ -167,7 +177,7 @@ function showList(items) {
 				known_for
 					? `${
 							known_for
-								? `<p style="font-size: .8rem">Known for: <span style="color: gold">${known_for[0].title}, ${known_for[1].title}, ${known_for[2].title}</span></p>`
+								? `<p style="font-size: .8rem">Known for: </br><span style="color: gold">• ${known_for.map(el => {return el.title ? el.title + ' • ' : '' }).join('')}</span></p>`
 								: ''
 					  }`
 					: ''
@@ -179,12 +189,12 @@ function showList(items) {
 							items === watchList || items === favorites
 								? `<div class="item__btn-container" style="flex-direction:row; justify-content:space-between; width: 100%">
         	    <button class="item__btn remove-btn">- remove</button>
-        	    <button class="item__btn info-btn">info</button>
+        	    <button class="item__btn info-btn">i</button>
         	</div>   `
 								: `<div class="item__btn-container">
 				<button class="item__btn watchlist-btn">+ watchlist</button>
 				<button class="item__btn favorites-btn">+ favorites</button>
-				<button class="item__btn info-btn">info</button>
+				<button class="item__btn info-btn">i</button>
 			</div>`
 					  }`
 					: `<div class="item__btn-container" style="display:none">
@@ -196,7 +206,8 @@ function showList(items) {
 
 		${
 			overview
-				? `<div class="item__info"> 
+				? `
+				<div class="item__info"> 
 				<p class="item__close-btn">x</p>
 				<p>${title ? title : name}</p> ${
 						!gender
@@ -324,25 +335,25 @@ function getFromLS() {
 getFromLS();
 
 // Change Page
-function changePage(btn) {
-	if (btn.classList.contains('next-btn')) {
-		document.querySelector('.prev-btn').classList.add('prev-btn--active');
-		if (page <= 5) {
-			page++;
-			if (page === 5) {
-				btn.classList.remove('next-btn--active');
+function changePage(url, btn) {
+			if (btn.classList.contains('next-btn')) {
+				document.querySelector('.prev-btn').classList.add('prev-btn--active');
+				page++;
+			} else {
+				document.querySelector('.next-btn').classList.add('next-btn--active');
+				page--;
 			}
-		}
-	} else {
-		page--;
-		document.querySelector('.next-btn').classList.add('next-btn--active');
-		if (page >= 1) {
 			if (page === 1) {
 				btn.classList.remove('prev-btn--active');
 			}
-		}
-	}
+			if (page === 5) {
+				btn.classList.remove('next-btn--active');
+			}
+			getData(url)
+			console.log(page);
 }
+
+
 
 // Event Listeners
 form.addEventListener('submit', (e) => {
@@ -361,6 +372,4 @@ form.addEventListener('submit', (e) => {
 navLinks.forEach((link) =>
 	link.addEventListener('click', () => changeSection(link))
 );
-pageBtns.forEach((btn) => {
-	btn.addEventListener('click', () => changePage(btn));
-});
+
