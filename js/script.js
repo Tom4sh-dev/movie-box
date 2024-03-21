@@ -349,6 +349,7 @@ function changePage(url, btn) {
 			if (page === 5) {
 				btn.classList.remove('next-btn--active');
 			}
+			window.scrollTo({top:0, behavior: 'smooth'})
 			getData(url)
 			console.log(page);
 }

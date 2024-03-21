@@ -263,7 +263,7 @@ body {
 }
 .main__items-container .item__img-box {
   width: 100%;
-  height: 250px;
+  height: 225px;
 }
 .main__items-container .item__img {
   width: 100%;
@@ -310,6 +310,13 @@ body {
   flex-direction: column;
   justify-content: center;
   flex-wrap: wrap;
+}
+.main__items-container .item__btn-container::before {
+  content: "";
+  margin: 20px auto 10px;
+  height: 1px;
+  width: 100%;
+  background-color: #fff;
 }
 .main__items-container .item__btn {
   padding-top: 5px;
