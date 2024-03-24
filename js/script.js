@@ -229,6 +229,7 @@ function showList(items) {
 		? (mainSubtitle.style.display = 'inline')
 		: (mainSubtitle.style.display = 'none');
 	showInfo();
+	showPageBtns()
 	addToWatchList(items);
 	addToFavorites(items);
 	removeItemFromMyList(items);
@@ -334,6 +335,14 @@ function getFromLS() {
 }
 getFromLS();
 
+// Show/hide page buttons
+function hidePageBtns() {
+	pageBtns.forEach(btn => btn.style.visibility = 'hidden')
+}
+function showPageBtns() {
+	pageBtns.forEach(btn => btn.style.visibility = 'visible')
+}
+
 // Change Page
 function changePage(url, btn) {
 			if (btn.classList.contains('next-btn')) {
@@ -360,6 +369,7 @@ function changePage(url, btn) {
 form.addEventListener('submit', (e) => {
 	e.preventDefault();
 	const searchTerm = search.value;
+	hidePageBtns()
 	if (searchTerm && searchTerm !== '') {
 		getData(searchURL + searchTerm + '"&page=');
 		handleNav();
