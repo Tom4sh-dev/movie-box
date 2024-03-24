@@ -147,7 +147,7 @@ function showList(items) {
 								? `${
 										poster_path ? imgPath + poster_path : imgPath + profile_path
 								  }`
-								: 'https://cdn.pixabay.com/photo/2017/02/01/00/26/cranium-2028555_1280.png'
+								: './img/unknown.png'
 						} alt="${title ? title : name}"} class="item__img">
         </div>
         <div class="item__info-box">
