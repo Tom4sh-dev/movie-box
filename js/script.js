@@ -103,7 +103,7 @@ function changeSection(link) {
 	} else if (link.classList.contains('upcoming-movies')) {
 		urlLink = upcomingMovies
 		getData(upcomingMovies);
-		mainTitle.textContent = 'Upcoming movies';
+		mainTitle.textContent = 'In cinemas';
 	} else if (link.classList.contains('top-rated-tv')) {
 		urlLink = topRatedTv
 		getData(topRatedTv);
