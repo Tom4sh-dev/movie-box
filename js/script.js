@@ -134,8 +134,7 @@ function showList(items) {
 			overview,
 			release_date,
 			first_air_date,
-			known_for,
-			gender,
+			known_for
 		} = item;
 
 		const element = document.createElement('div');
@@ -154,12 +153,7 @@ function showList(items) {
             <div class="item__header">
 
 			${
-				!gender
-					? `<p class="item__year">${(release_date
-							? release_date
-							: first_air_date
-					  ).slice(0, 4)}</p>`
-					: ''
+				!known_for	? `<p class="item__year">${release_date ? release_date.slice(0, 4) : first_air_date ? first_air_date.slice(0, 4) : 'unknown'}</p>`	: ''
 			}
 
 				
@@ -184,7 +178,7 @@ function showList(items) {
 			}
 			
 			${
-				!gender
+				!known_for
 					? `${
 							items === watchList || items === favorites
 								? `<div class="item__btn-container" style="flex-direction:row; justify-content:space-between; width: 100%">
@@ -210,7 +204,7 @@ function showList(items) {
 				<div class="item__info"> 
 				<p class="item__close-btn">x</p>
 				<p>${title ? title : name}</p> ${
-						!gender
+						!known_for
 							? `</br></br><p>${
 									release_date ? release_date : first_air_date
 							  }</p>`
@@ -355,12 +349,11 @@ function changePage(url, btn) {
 			if (page === 1) {
 				btn.classList.remove('prev-btn--active');
 			}
-			if (page === 5) {
+			if (page === 10) {
 				btn.classList.remove('next-btn--active');
 			}
 			window.scrollTo({top:0, behavior: 'smooth'})
 			getData(url)
-			console.log(page);
 }
 
 
@@ -368,6 +361,7 @@ function changePage(url, btn) {
 // Event Listeners
 form.addEventListener('submit', (e) => {
 	e.preventDefault();
+	page = 1;
 	const searchTerm = search.value;
 	hidePageBtns()
 	if (searchTerm && searchTerm !== '') {
@@ -379,6 +373,7 @@ form.addEventListener('submit', (e) => {
 		window.location.reload();
 		mainTitle.textContent = `Movies popular now`;
 	}
+	showInfo();
 });
 navLinks.forEach((link) =>
 	link.addEventListener('click', () => changeSection(link))
