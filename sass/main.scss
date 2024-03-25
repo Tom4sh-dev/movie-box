@@ -141,7 +141,7 @@ body {
 			display: flex;
 			flex-direction: column;
 			margin: 10px;
-			width: 16%;
+			width: 14%;
 			min-width: 150px;
 			background-color: var(--dark-color);
 			&__img-box {
@@ -160,7 +160,7 @@ body {
 			}
 			&__header {
 				display: flex;
-				margin-bottom: 20px;
+				margin-bottom: 10px;
 				width: 100%;
 				flex-wrap: wrap;
 			}
