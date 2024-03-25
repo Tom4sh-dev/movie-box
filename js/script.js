@@ -61,12 +61,14 @@ const navLinks = document.querySelectorAll('.nav__link');
 
 // Page Buttons
 const pageBtns = document.querySelectorAll('.main__btn');
+const pageNextBtns = document.querySelector('.next-btn')
+const pagePrevBtns = document.querySelector('.prev-btn')
 const pageBtnContainer = document.querySelector('.main__btn-container');
 let page = 1;
-let urlLink = popularMovies
+let urlLink = popularMovies;
 
 // Listeners added to change page button
-let listenersAdded = false
+let listenersAdded = false;
 
 // Watchlist/Favorites Containers
 let watchList = [];
@@ -78,14 +80,14 @@ async function getData(url) {
 	const data = await res.json();
 	const results = data.results;
 	showList(results);
-	
+
 	// Change Page
 	if (!listenersAdded) {
-        pageBtns.forEach((btn) => {
-            btn.addEventListener('click', () => changePage(urlLink, btn));
-        });
-        listenersAdded = true; // Set the flag so this block won't run again
-    }
+		pageBtns.forEach((btn) => {
+			btn.addEventListener('click', () => changePage(urlLink, btn));
+		});
+		listenersAdded = true; // Set the flag so this block won't run again
+	}
 }
 
 // Show Popular Movies OnLoad
@@ -94,22 +96,22 @@ getData(popularMovies);
 // Change Sections
 function changeSection(link) {
 	page = 1;
-	document.querySelector('.prev-btn').classList.remove('prev-btn--active');
-	document.querySelector('.next-btn').classList.add('next-btn--active');
+	pagePrevBtns.classList.remove('prev-btn--active');
+	pageNextBtns.classList.add('next-btn--active');
 	if (link.classList.contains('top-rated-movies')) {
-		urlLink = topRatedMovies
+		urlLink = topRatedMovies;
 		getData(topRatedMovies);
 		mainTitle.textContent = 'Top rated movies';
 	} else if (link.classList.contains('upcoming-movies')) {
-		urlLink = upcomingMovies
+		urlLink = upcomingMovies;
 		getData(upcomingMovies);
 		mainTitle.textContent = 'In cinemas';
 	} else if (link.classList.contains('top-rated-tv')) {
-		urlLink = topRatedTv
+		urlLink = topRatedTv;
 		getData(topRatedTv);
 		mainTitle.textContent = 'Top rated TV Series';
 	} else if (link.classList.contains('popular-people')) {
-		urlLink = popularPeople
+		urlLink = popularPeople;
 		getData(popularPeople);
 		mainTitle.textContent = 'Popular people';
 	} else if (link.classList.contains('watchlist')) {
@@ -134,7 +136,7 @@ function showList(items) {
 			overview,
 			release_date,
 			first_air_date,
-			known_for
+			known_for,
 		} = item;
 
 		const element = document.createElement('div');
@@ -153,7 +155,15 @@ function showList(items) {
             <div class="item__header">
 
 			${
-				!known_for	? `<p class="item__year">${release_date ? release_date.slice(0, 4) : first_air_date ? first_air_date.slice(0, 4) : 'unknown'}</p>`	: ''
+				!known_for
+					? `<p class="item__year">${
+							release_date
+								? release_date.slice(0, 4)
+								: first_air_date
+								? first_air_date.slice(0, 4)
+								: 'unknown'
+					  }</p>`
+					: ''
 			}
 
 				
@@ -171,7 +181,11 @@ function showList(items) {
 				known_for
 					? `${
 							known_for
-								? `<p style="font-size: .8rem">Known for: </br><span style="color: gold">• ${known_for.map(el => {return el.title ? el.title + ' • ' : '' }).join('')}</span></p>`
+								? `<p style="font-size: .8rem">Known for: </br><span style="color: gold">• ${known_for
+										.map((el) => {
+											return el.title ? el.title + ' • ' : '';
+										})
+										.join('')}</span></p>`
 								: ''
 					  }`
 					: ''
@@ -223,7 +237,6 @@ function showList(items) {
 		? (mainSubtitle.style.display = 'inline')
 		: (mainSubtitle.style.display = 'none');
 	showInfo();
-	showPageBtns()
 	addToWatchList(items);
 	addToFavorites(items);
 	removeItemFromMyList(items);
@@ -253,10 +266,9 @@ function showInfo() {
 			btn
 				.closest('.item__info-box')
 				.nextElementSibling.classList.add('item__info--active');
-				infoCloseBtns[idx].addEventListener('click', () =>
+			infoCloseBtns[idx].addEventListener('click', () =>
 				itemsInfo[idx].classList.remove('item__info--active')
 			);
-			
 		})
 	);
 }
@@ -331,44 +343,43 @@ getFromLS();
 
 // Show/hide page buttons
 function hidePageBtns() {
-	pageBtns.forEach(btn => btn.style.visibility = 'hidden')
+	pagePrevBtns.classList.remove('prev-btn--active');
+	pageNextBtns.classList.remove('next-btn--active');
 }
-function showPageBtns() {
-	pageBtns.forEach(btn => btn.style.visibility = 'visible')
-}
+
 
 // Change Page
 function changePage(url, btn) {
-			if (btn.classList.contains('next-btn')) {
-				document.querySelector('.prev-btn').classList.add('prev-btn--active');
-				page++;
-			} else {
-				document.querySelector('.next-btn').classList.add('next-btn--active');
-				page--;
-			}
-			if (page === 1) {
-				btn.classList.remove('prev-btn--active');
-			}
-			if (page === 10) {
-				btn.classList.remove('next-btn--active');
-			}
-			window.scrollTo({top:0, behavior: 'smooth'})
-			getData(url)
+	if (btn.classList.contains('next-btn')) {
+		document.querySelector('.prev-btn').classList.add('prev-btn--active');
+		page++;
+	} else {
+		document.querySelector('.next-btn').classList.add('next-btn--active');
+		page--;
+	}
+	if (page === 1) {
+		btn.classList.remove('prev-btn--active');
+	}
+	if (page === 10) {
+		btn.classList.remove('next-btn--active');
+	}
+	window.scrollTo({ top: 0, behavior: 'smooth' });
+	getData(url);
 }
-
-
 
 // Event Listeners
 form.addEventListener('submit', (e) => {
 	e.preventDefault();
 	page = 1;
+	
 	const searchTerm = search.value;
-	hidePageBtns()
+	
 	if (searchTerm && searchTerm !== '') {
 		getData(searchURL + searchTerm + '"&page=');
 		handleNav();
 		mainTitle.textContent = `Found results`;
 		search.value = '';
+		hidePageBtns();
 	} else {
 		window.location.reload();
 		mainTitle.textContent = `Movies popular now`;
@@ -378,4 +389,3 @@ form.addEventListener('submit', (e) => {
 navLinks.forEach((link) =>
 	link.addEventListener('click', () => changeSection(link))
 );
-
